@@ -6,4 +6,4 @@ Includes an example LaunchD to trigger the tool whenever a WiFi change occurs.
 
 The latest (and possiably only) release will be avaliable here:
 
-https://github.com/ThomasHolbrook/bannedSSID/releases
+https://github.com/j24professionalservices/bannedSSID/releases
