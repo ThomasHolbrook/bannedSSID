@@ -13,13 +13,13 @@ import Cocoa
 import CoreWLAN
 import Foundation
 
-let iface = CWWiFiClient.sharedWiFiClient().interface()?.interfaceName
+let iface = CWWiFiClient.shared().interface()?.interfaceName
 
 // Argument parsing Errors.
 
-let arguments = Process.arguments
-let currentSSID = CWWiFiClient.sharedWiFiClient().interface()?.ssid()
-let executableName = NSString(string: Process.arguments.first!).pathComponents.last!
+let arguments = CommandLine.arguments
+let currentSSID = CWWiFiClient.shared().interface()?.ssid()
+let executableName = NSString(string: CommandLine.arguments.first!).pathComponents.last!
 
 func usage() {
     
@@ -45,14 +45,14 @@ if arguments.count == 3 {
     
     var delay = UInt32(arguments[2])
     sleep(delay!)
-
+    
 }
 
 if arguments.contains("-help") || arguments.contains("-h") {
     usage()
     exit(0)
 }
-
+    
 else if arguments.count == 1 {
     usage()
     exit(0)
@@ -62,13 +62,13 @@ else if arguments.count == 2 {
     usage()
     exit(0)
 }
-
-
+    
+    
 else if arguments.count > 3 {
     usage()
     exit(0)
 }
-
+    
 else if currentSSID == nil {
     print("Wifi Not Connected to SSID")
     exit(0)
@@ -90,16 +90,16 @@ if currentSSID! == bannedSSID {
     //If its a banned SSID diconnect the client
     
     print("Disconnecting from Banned SSID")
-    CWWiFiClient.sharedWiFiClient().interface()!.disassociate()
+    CWWiFiClient.shared().interface()!.disassociate()
     
     //Use networksetup to remove the prefered network entry
     
     print("Removing from Preferred Networks")
-    let taskCheck = NSTask()
+    let taskCheck = Process()
     taskCheck.launchPath = "/usr/sbin/networksetup"
     taskCheck.arguments = ["-removepreferredwirelessnetwork",iface!,bannedSSID]
     
-    let pipe = NSPipe()
+    let pipe = Pipe()
     taskCheck.standardOutput = pipe
     
     taskCheck.launch()
